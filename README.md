@@ -1,6 +1,6 @@
 # sc-loader
 
-Load `AudioBuffer` in Node.js and the Browser with a unified interface
+Load `AudioBuffer` in Node.js (cf. [node-web-audio-api](https://www.npmjs.com/package/node-web-audio-api)) and the Browser with a unified interface
 
 ## Install
 

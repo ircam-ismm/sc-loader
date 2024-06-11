@@ -48,10 +48,10 @@ and the Browser with a unified interface.
 
 ### Parameters
 
-*   `sampleRateOrAudioContext` **(AudioContext | float)** An exisiting AudioContext
+*   `sampleRateOrAudioContext` **(AudioContext | [number][11])** An exisiting AudioContext
     instance or a valid sample rate. Loaded audio buffers will be resampled to
     the given sample rate or audio context sample rate
-*   `serverAddress` **[string][11]** Optional server address URL to use
+*   `serverAddress` **[string][12]** Optional server address URL to use
     for loading the audio files. (optional, default `null`)
 
 ### Examples
@@ -97,7 +97,7 @@ Returns `null` if aborted
 
 #### Parameters
 
-*   `requestInfos` **([string][11] | [array][12]<[string][11]> | [object][13]<[string][11], [string][11]>)** List of
+*   `requestInfos` **([string][12] | [array][13]<[string][12]> | [object][14]<[string][12], [string][12]>)** List of
     sound file to load, the returned value structure will match the strcuture
     of the argument. If the sound file could not be load (e.g. file not found or
     decoding error) the slot will be set to `null`.
@@ -113,7 +113,7 @@ const buffers = await loader.load(['file1.wav', 'file2.mp3', 'ile3.wav']);
 const buffers = await loader.load({ file1: 'file1.wav' });
 ```
 
-Returns **(AudioBuffer | [array][12]\<AudioBuffer> | [object][13]<[string][11], AudioBuffer>)**&#x20;
+Returns **(AudioBuffer | [array][13]\<AudioBuffer> | [object][14]<[string][12], AudioBuffer>)**&#x20;
 
 ### get
 
@@ -125,7 +125,7 @@ the given key.
 #### Parameters
 
 *   `key` &#x20;
-*   `null-null` **([number][14] | [string][11])** Key to the AudioBuffer
+*   `null-null` **([number][11] | [string][12])** Key to the AudioBuffer
 
 #### Examples
 
@@ -155,7 +155,7 @@ const cache = loader.getValues(0);
 console.log(buffers === cache);
 ```
 
-Returns **(AudioBuffer | [array][12]\<AudioBuffer> | [object][13]<[string][11], AudioBuffer>)**&#x20;
+Returns **(AudioBuffer | [array][13]\<AudioBuffer> | [object][14]<[string][12], AudioBuffer>)**&#x20;
 
 ### abort
 
@@ -173,7 +173,7 @@ const result = await promise;
 console.log(result === null);
 ```
 
-Returns **(AudioBuffer | [array][12]\<AudioBuffer> | [object][13]<[string][11], AudioBuffer>)**&#x20;
+Returns **(AudioBuffer | [array][13]\<AudioBuffer> | [object][14]<[string][12], AudioBuffer>)**&#x20;
 
 ### clear
 
@@ -208,13 +208,13 @@ console.log(cache === null);
 
 [10]: #clear
 
-[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
 <!-- apistop -->
 

@@ -1,9 +1,10 @@
 import {
+  isURL,
+} from '@ircam/sc-utils';
+
+import {
   createAudioBufferLoader
 } from './AudioBufferLoader.js';
-import {
-  isURL,
-} from './utils.js';
 
 /**
  * Try to resolve different patterns for loading soundfiles

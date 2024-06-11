@@ -1,10 +1,8 @@
 import {
   isPlainObject,
   isString,
-} from '@ircam/sc-utils';
-import {
   isURL,
-} from './utils.js';
+} from '@ircam/sc-utils';
 
 export function createAudioBufferLoader(
   BaseAudioContext,

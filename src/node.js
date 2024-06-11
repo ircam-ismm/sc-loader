@@ -2,6 +2,9 @@ import fs from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import {
+  isURL,
+} from '@ircam/sc-utils';
 import caller from 'caller';
 import fetch from 'node-fetch';
 import {
@@ -13,9 +16,6 @@ import {
 import {
   createAudioBufferLoader
 } from './AudioBufferLoader.js';
-import {
-  isURL,
-} from './utils.js';
 
 /**
  * Try to resolve different patterns for loading soundfiles

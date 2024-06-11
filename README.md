@@ -218,9 +218,17 @@ console.log(cache === null);
 
 <!-- apistop -->
 
-### Todos
+## Development notes
 
-provides loaders for other type of files
+### Running the tests
+
+```
+npm run test
+```
+
+### TODOS
+
+Provides loaders for other type of files?
 + [ ] AudioBuffers
 + [ ] JSON
 + [ ] raw text

@@ -58,6 +58,7 @@ and the Browser with a unified interface.
 
 ```javascript
 import { AudioBufferLoader } from '@ircam/sc-loader';
+// import { AudioContext } from 'node-web-audio-api';
 
 const audioContext = new AudioContext()
 const loader = new AudioBufferLoader(audioContext);

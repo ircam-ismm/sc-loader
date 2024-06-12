@@ -228,6 +228,8 @@ npm run test
 
 ### TODOS
 
+- [ ] make a diff between each load call to keep already loaded buffers from cache
+
 Provides loaders for other type of files?
 + [ ] AudioBuffers
 + [ ] JSON

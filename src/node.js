@@ -4,6 +4,7 @@ import path from 'node:path';
 
 import {
   isURL,
+  isString,
 } from '@ircam/sc-utils';
 import caller from 'caller';
 import fetch from 'node-fetch';
@@ -69,13 +70,13 @@ export function resolvePathname(pathname, serverAddress = null) {
         return url.href;
       } catch(err) {
         // could not build the URL
-        console.warn(`Cannot resolve path for value '${value}', ignoring...`);
+        console.warn(`Cannot resolve path for value '${pathname}', ignoring...`);
         return null;
       }
     }
 
     // return null in all other cases
-    console.warn(`Cannot resolve path for value '${value}', ignoring...`);
+    console.warn(`Cannot resolve path for value '${pathname}', ignoring...`);
     return null;
   }
 }
@@ -94,32 +95,36 @@ async function loadFile(audioContext, resolvedPathname, signal) {
 
   let arrayBuffer;
 
-  if (resolvedPathname.startsWith('http')) {
-    try {
-      const response = await fetch(resolvedPathname, { signal });
+  if (isString(resolvedPathname)) {
+    if (resolvedPathname.startsWith('http')) {
+      try {
+        const response = await fetch(resolvedPathname, { signal });
 
-      if (response.ok) {
-        arrayBuffer = await response.arrayBuffer();
-      } else {
-        console.error(`${response.status} Error: Cannot fetch file '${resolvedPathname}'`);
+        if (response.ok) {
+          arrayBuffer = await response.arrayBuffer();
+        } else {
+          console.error(`${response.status} Error: Cannot fetch file '${resolvedPathname}'`);
+          return null;
+        }
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.error(err.message);
+        }
         return null;
       }
-    } catch (err) {
-      if (err.name !== 'AbortError') {
-        console.error(err.message);
+    } else {
+      try {
+        const contents = await readFile(resolvedPathname, { signal });
+        arrayBuffer = contents.buffer;
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.error(err.message);
+        }
+        return null;
       }
-      return null;
     }
   } else {
-    try {
-      const contents = await readFile(resolvedPathname, { signal });
-      arrayBuffer = contents.buffer;
-    } catch (err) {
-      if (err.name !== 'AbortError') {
-        console.error(err.message);
-      }
-      return null;
-    }
+    return null;
   }
 
   if (signal.aborted) {

@@ -1,6 +1,6 @@
 {
   "name": "@ircam/sc-loader",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": "Benjamin Matuszewski",
   "description": "Unified assets loaders between node and browser",
   "type": "module",

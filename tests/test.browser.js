@@ -172,6 +172,63 @@ describe('# AudioBufferLoader', () => {
     });
   });
 
+  describe('## load(requestInfos, { forceMono })', () => {
+    it('should throw if invalid type (1)', async () => {
+      const loader = new AudioBufferLoader(48000);
+      let errored = false;
+      try {
+        const result = await loader.load('samples/sample.wav', { forceMono: null });
+      } catch (err) {
+        console.log(err.message);
+        errored = true;
+      }
+
+      assert.equal(errored, true);
+    });
+
+    it('should throw if invalid type (2)', async () => {
+      const loader = new AudioBufferLoader(48000);
+      let errored = false;
+      try {
+        const result = await loader.load('samples/sample.wav', { forceMono: -1 });
+      } catch (err) {
+        console.log(err.message);
+        errored = true;
+      }
+
+      assert.equal(errored, true);
+    });
+
+    it('should downmix if forceMono = true', async () => {
+      const loader = new AudioBufferLoader(48000);
+      const model = await loader.load('samples/sample.wav');
+      const result = await loader.load('samples/sample.wav', { forceMono: true });
+
+      const expected = new Float32Array(model.length);
+      const left = model.getChannelData(0);
+      const right = model.getChannelData(1);
+      for (let i = 0; i < expected.length; i++) {
+        expected[i] = 0.5 * (left[i] + right[i]);
+      }
+
+      assert.equal(result.numberOfChannels, 1);
+      assert.equal(result.length, model.length);
+      assert.equal(result.sampleRate, model.sampleRate);
+      assert.deepEqual(result.getChannelData(0), expected);
+    });
+
+    it('should use given channel number if forceMono is an integer', async () => {
+      const loader = new AudioBufferLoader(48000);
+      const model = await loader.load('samples/sample.wav');
+      const result = await loader.load('samples/sample.wav', { forceMono: 1 });
+
+      assert.equal(result.numberOfChannels, 1);
+      assert.equal(result.length, model.length);
+      assert.equal(result.sampleRate, model.sampleRate);
+      assert.deepEqual(result.getChannelData(0), model.getChannelData(1));
+    });
+  });
+
   describe('## getValues()', () => {
     it('[string] should return last loaded value', async () => {
       const loader = new AudioBufferLoader(48000);

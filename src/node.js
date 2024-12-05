@@ -103,12 +103,12 @@ async function loadFile(audioContext, resolvedPathname, signal) {
         if (response.ok) {
           arrayBuffer = await response.arrayBuffer();
         } else {
-          console.error(`${response.status} Error: Cannot fetch file '${resolvedPathname}'`);
+          console.warn(`${response.status} Error: Cannot fetch file '${resolvedPathname}'`);
           return null;
         }
       } catch (err) {
         if (err.name !== 'AbortError') {
-          console.error(err.message);
+          console.warn(err.message);
         }
         return null;
       }
@@ -118,7 +118,7 @@ async function loadFile(audioContext, resolvedPathname, signal) {
         arrayBuffer = contents.buffer;
       } catch (err) {
         if (err.name !== 'AbortError') {
-          console.error(err.message);
+          console.warn(err.message);
         }
         return null;
       }

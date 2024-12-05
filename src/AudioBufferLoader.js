@@ -34,8 +34,8 @@ export function createAudioBufferLoader(
      * @param {AudioContext|number} sampleRateOrAudioContext - An exisiting AudioContext
      *  instance or a valid sample rate. Loaded audio buffers will be resampled to
      *  the given sample rate or audio context sample rate
-     * @param {string} [serverAddress=null] - Optional server address URL to use
-     *  for loading the audio files.
+     * @param {string} [serverAddress=null] - Optional server URL to use for loading
+     *  the audio files.
      */
     constructor(sampleRateOrAudioContext, serverAddress = null) {
       if (sampleRateOrAudioContext instanceof BaseAudioContext) {
@@ -96,7 +96,7 @@ export function createAudioBufferLoader(
      * // load single file
      * const buffer = await loader.load('path/to/file.wav');
      * // load array
-     * const buffers = await loader.load(['file1.wav', 'file2.mp3', 'ile3.wav']);
+     * const buffers = await loader.load(['file1.wav', 'file2.mp3', 'file3.wav']);
      * // load object
      * const buffers = await loader.load({ file1: 'file1.wav' });
      *
@@ -104,13 +104,24 @@ export function createAudioBufferLoader(
      *  sound file to load, the returned value structure will match the strcuture
      *  of the argument. If the sound file could not be load (e.g. file not found or
      *  decoding error) the slot will be set to `null`.
+     * @param {Object} options
+     * @param {boolean|number} [options.forceMono=false] - Automatically downmix
+     *  the loaded audio buffers to mono. If set to `true`, stereo files will be
+     *  downmixed using the following equation: `0.5 * (left + right). If a channel
+     *  index is given, all other channels will be discarded.
      * @return {AudioBuffer|array<AudioBuffer>|object<string, AudioBuffer>}
      */
-    async load(requestInfos) {
+    async load(requestInfos, {
+      forceMono = false,
+    } = {}) {
       this.#abortController = new AbortController();
 
       if (!isString(requestInfos) && !Array.isArray(requestInfos) && !isPlainObject(requestInfos)) {
-        throw new TypeError(`Cannot execute 'load' on 'AudioBufferLoader': argument 1 should be string, array or object`);
+        throw new TypeError(`Cannot execute 'load' on 'AudioBufferLoader': argument 1 should be either a string, an array or an object`);
+      }
+
+      if (typeof forceMono !== 'boolean' && !(Number.isInteger(forceMono) && forceMono > 0)) {
+        throw new TypeError(`Cannot execute 'load' on 'AudioBufferLoader': option 'forceMono' from argument 2 should be either a boolean or a positive integer`);
       }
 
       const packedInfos = isString(requestInfos) ? [requestInfos] : requestInfos;
@@ -123,12 +134,49 @@ export function createAudioBufferLoader(
         promises.push(promise);
       }
 
-      const results = await Promise.all(promises);
+      let results = await Promise.all(promises);
 
       if (signal.aborted) {
         // keep old data
         this.#abortController = null;
         return null;
+      }
+
+      // downmix to mono
+      if (forceMono !== false) {
+        results = results.map(buffer => {
+          if (buffer === null && buffer.numberOfChannels === 1) {  // nothing to do
+            return buffer;
+          } else {
+            const mono = new AudioBuffer({
+              numberOfChannels: 1,
+              length: buffer.length,
+              sampleRate: buffer.sampleRate,
+            });
+
+            if (forceMono === true) {
+              if (buffer.numberOfChannels > 2) {
+                console.warn('Number of channels is > 2, additional channels will be discarded when downmixing to mono');
+              }
+
+              const channel = new Float32Array(buffer.length);
+              const left = buffer.getChannelData(0);
+              const right = buffer.getChannelData(1);
+
+              for (let i = 0; i < buffer.length; i++) {
+                channel[i] = 0.5 * (left[i] + right[i]);
+              }
+
+              mono.copyToChannel(channel, 0);
+            } else {
+              const index = forceMono % buffer.numberOfChannels;
+              const channel = buffer.getChannelData(index);
+              mono.copyToChannel(channel, 0);
+            }
+
+            return mono;
+          }
+        });
       }
 
       // populate clone of request infos

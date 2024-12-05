@@ -14,6 +14,6 @@ await sleep(1);
 // open in browser
 execSync('open http://127.0.0.1:3000');
 // kill server once test are done
-await sleep(2);
+await sleep(4);
 childServer.kill('SIGKILL');
 

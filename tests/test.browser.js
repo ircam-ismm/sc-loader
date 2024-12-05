@@ -103,6 +103,12 @@ describe('# AudioBufferLoader', () => {
     const clickDuration = '0.010'; // '0.052'; mp3 issue in rust
     const clackDuration = '0.020';
 
+    it('[string] should return null if file is not found', async () => {
+      const loader = new AudioBufferLoader(48000);
+      const result = await loader.load('coucou');
+      assert.equal(result, null);
+    });
+
     it('[string] should support string as argument', async () => {
       const loader = new AudioBufferLoader(48000);
       const result = await loader.load('samples/sample.wav');

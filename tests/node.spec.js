@@ -129,7 +129,7 @@ describe('# AudioBufferLoader', () => {
     const clickDuration = 0.05225; // this should be 0.01, probably mp3 decoding issue
     const clackDuration = 0.020020833333333335;
 
-    it.only('[string] should return null if file is not found', async () => {
+    it('[string] should return null if file is not found', async () => {
       const loader = new AudioBufferLoader(48000);
       const result = await loader.load('coucou');
       assert.equal(result, null);

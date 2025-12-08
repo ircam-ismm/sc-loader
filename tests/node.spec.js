@@ -1,6 +1,8 @@
 import {
   exec,
 } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import {
   isPlainObject,
@@ -35,6 +37,24 @@ describe('# resolvePathname(pathname, serverAddress = null)', () => {
     const pathname = './samples/sample.wav';
     const expected = 'tests/samples/sample.wav';
     const result = resolvePathname(pathname);
+
+    assert.equal(result, expected);
+  });
+
+  it.only('should support pathname relative to caller site with spaces and stuff', () => {
+    // create a complex pathname
+    const destDirname = ' &$!zL E206/file:/kj é|slâkfj';
+    fs.mkdirSync(path.join('tests', destDirname), { recursive: true });
+
+    const pathname = path.join(destDirname, 'sample.wav');
+
+    const source = 'tests/samples/sample.wav';
+    const expected = `tests/${destDirname}/sample.wav`;
+    fs.copyFileSync(source, expected);
+
+    const result = resolvePathname(pathname);
+    // cleaning
+    fs.rmSync(path.join('tests', destDirname), { force: true, recursive: true });
 
     assert.equal(result, expected);
   });

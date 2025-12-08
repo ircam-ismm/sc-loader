@@ -32,7 +32,7 @@ import {
  * @param {string} [serverAddress=null] - An URL from which to build a absolute URL
  * @return {string|null} - Path relative to `process.cwd` if the file has been found
  *  on the file system, a valid URL or `null` if all strategies failed.
- * @throws if serverAddress is not avlid URL.
+ * @throws if serverAddress is not valid URL.
  */
 export function resolvePathname(pathname, serverAddress = null) {
   // ensure given serverAddress is a valid URL
@@ -63,7 +63,7 @@ export function resolvePathname(pathname, serverAddress = null) {
       return path.relative(process.cwd(), absPathname);
     }
 
-    // File not found on file system but address is given, create an URL from these informations
+    // File not found on file system but address is given, create an URL from these information
     if (serverAddress !== null) {
       try {
         const url = new URL(pathname, serverAddress);

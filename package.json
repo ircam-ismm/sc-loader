@@ -15,7 +15,7 @@
   },
   "scripts": {
     "api": "jsdoc-to-readme --src src/AudioBufferLoader.js",
-    "doc": "npm run api",
+    "preversion": "npm run api && npm run types && git add -A && git commit -m 'docs: rebuild' --allow-empty",
     "test": "mocha tests/*.spec.js",
     "test:only": "mocha"
   },

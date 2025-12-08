@@ -31,7 +31,7 @@ export function createAudioBufferLoader(
     #abortController = null;
 
     /**
-     * @param {AudioContext|number} sampleRateOrAudioContext - An exisiting AudioContext
+     * @param {AudioContext|number} sampleRateOrAudioContext - An existing AudioContext
      *  instance or a valid sample rate. Loaded audio buffers will be resampled to
      *  the given sample rate or audio context sample rate
      * @param {string} [serverAddress=null] - Optional server URL to use for loading
@@ -52,7 +52,7 @@ export function createAudioBufferLoader(
         throw new TypeError(`Cannot construct 'AudioBufferLoader': Argument 1 should either an instance of BaseAudioContext or a valid sample rate`);
       }
 
-        // make sure given serverAddress is a valid URL
+      // make sure given serverAddress is a valid URL
       if (serverAddress !== null && !isURL(serverAddress)) {
         throw new TypeError(`Cannot construct 'AudioBufferLoader': Argument 2 ('${serverAddress}') is not null and is not a valid URL`);
       }
@@ -101,13 +101,13 @@ export function createAudioBufferLoader(
      * const buffers = await loader.load({ file1: 'file1.wav' });
      *
      * @param {string|array<string>|object<string, string>} requestInfos - List of
-     *  sound file to load, the returned value structure will match the strcuture
+     *  sound file to load, the returned value structure will match the structure
      *  of the argument. If the sound file could not be load (e.g. file not found or
      *  decoding error) the slot will be set to `null`.
      * @param {Object} options
      * @param {boolean|number} [options.forceMono=false] - Automatically downmix
      *  the loaded audio buffers to mono. If set to `true`, stereo files will be
-     *  downmixed using the following equation: `0.5 * (left + right). If a channel
+     *  down-mixed using the following equation: `0.5 * (left + right). If a channel
      *  index is given, all other channels will be discarded.
      * @return {AudioBuffer|array<AudioBuffer>|object<string, AudioBuffer>}
      */
@@ -156,7 +156,7 @@ export function createAudioBufferLoader(
 
             if (forceMono === true) {
               if (buffer.numberOfChannels > 2) {
-                console.warn('Number of channels is > 2, additional channels will be discarded when downmixing to mono');
+                console.warn('Number of channels is > 2, additional channels will be discarded when down-mixing to mono');
               }
 
               const channel = new Float32Array(buffer.length);

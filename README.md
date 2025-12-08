@@ -51,8 +51,8 @@ and the Browser with a unified interface.
 *   `sampleRateOrAudioContext` **(AudioContext | [number][11])** An exisiting AudioContext
     instance or a valid sample rate. Loaded audio buffers will be resampled to
     the given sample rate or audio context sample rate
-*   `serverAddress` **[string][12]** Optional server address URL to use
-    for loading the audio files. (optional, default `null`)
+*   `serverAddress` **[string][12]** Optional server URL to use for loading
+    the audio files. (optional, default `null`)
 
 ### Examples
 
@@ -101,6 +101,12 @@ Returns `null` if aborted
     sound file to load, the returned value structure will match the strcuture
     of the argument. If the sound file could not be load (e.g. file not found or
     decoding error) the slot will be set to `null`.
+*   `options` **[Object][14]**  (optional, default `{}`)
+
+    *   `options.forceMono` **([boolean][15] | [number][11])** Automatically downmix
+        the loaded audio buffers to mono. If set to `true`, stereo files will be
+        downmixed using the following equation: \`0.5 \* (left + right). If a channel
+        index is given, all other channels will be discarded. (optional, default `false`)
 
 #### Examples
 
@@ -108,7 +114,7 @@ Returns `null` if aborted
 // load single file
 const buffer = await loader.load('path/to/file.wav');
 // load array
-const buffers = await loader.load(['file1.wav', 'file2.mp3', 'ile3.wav']);
+const buffers = await loader.load(['file1.wav', 'file2.mp3', 'file3.wav']);
 // load object
 const buffers = await loader.load({ file1: 'file1.wav' });
 ```
@@ -215,6 +221,8 @@ console.log(cache === null);
 [13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
 [14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
 <!-- apistop -->
 

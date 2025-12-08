@@ -48,7 +48,7 @@ and the Browser with a unified interface.
 
 ### Parameters
 
-*   `sampleRateOrAudioContext` **(AudioContext | [number][11])** An exisiting AudioContext
+*   `sampleRateOrAudioContext` **(AudioContext | [number][11])** An existing AudioContext
     instance or a valid sample rate. Loaded audio buffers will be resampled to
     the given sample rate or audio context sample rate
 *   `serverAddress` **[string][12]** Optional server URL to use for loading
@@ -98,14 +98,14 @@ Returns `null` if aborted
 #### Parameters
 
 *   `requestInfos` **([string][12] | [array][13]<[string][12]> | [object][14]<[string][12], [string][12]>)** List of
-    sound file to load, the returned value structure will match the strcuture
+    sound file to load, the returned value structure will match the structure
     of the argument. If the sound file could not be load (e.g. file not found or
     decoding error) the slot will be set to `null`.
 *   `options` **[Object][14]**  (optional, default `{}`)
 
     *   `options.forceMono` **([boolean][15] | [number][11])** Automatically downmix
         the loaded audio buffers to mono. If set to `true`, stereo files will be
-        downmixed using the following equation: \`0.5 \* (left + right). If a channel
+        down-mixed using the following equation: \`0.5 \* (left + right). If a channel
         index is given, all other channels will be discarded. (optional, default `false`)
 
 #### Examples

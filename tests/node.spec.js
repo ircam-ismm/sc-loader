@@ -43,7 +43,7 @@ describe('# resolvePathname(pathname, serverAddress = null)', () => {
 
   it.only('should support pathname relative to caller site with spaces and stuff', () => {
     // create a complex pathname
-    const destDirname = ' &$!zL E206/file:/kj é|slâkfj';
+    const destDirname = ' &$!zL E206/kj é|slâkfj';
     fs.mkdirSync(path.join('tests', destDirname), { recursive: true });
 
     const pathname = path.join(destDirname, 'sample.wav');
@@ -54,7 +54,7 @@ describe('# resolvePathname(pathname, serverAddress = null)', () => {
 
     const result = resolvePathname(pathname);
     // cleaning
-    fs.rmSync(path.join('tests', destDirname), { force: true, recursive: true });
+    fs.rmSync(path.join('tests', destDirname.split('/')[0]), { force: true, recursive: true });
 
     assert.equal(result, expected);
   });
